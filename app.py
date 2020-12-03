@@ -17,18 +17,47 @@ def start_survey():
     title = survey.title
     instructions = survey.instructions
 
-    return render_template("survey_start.html", 
-    title = title,
-    instructions = instructions)
+    # Empty previous answers
+    responses.clear()
+
+    return render_template("survey_start.html",
+                           title=title,
+                           instructions=instructions)
 
 
-@app.route("/questions/<int:q_num>")
+@app.route("/questions/<int:q_num>", methods=["POST", "GET"])
 def show_question(q_num):
     """ takes current question as param and renders html based on question """
     question = survey.questions[q_num]
 
-    return render_template('question.html', 
-    question = question)
+    return render_template('question.html',
+                           question=question,
+                           q_num=q_num)
 
 
-@app.route("/action")
+@app.route("/answer", methods=["POST"])
+def record_answer():
+    """ retrieve user answer and add to the reponse list
+        then redirect to the next question page
+    """
+    answer = request.form.get("answer")
+    responses.append(answer)
+
+    # Get the next question number
+    q_num = int(request.form.get("q_num")) + 1
+
+    if q_num < len(survey.questions):
+        return redirect(f"/questions/{q_num}")
+    else:
+        return redirect("/completion")
+
+
+@app.route("/completion")
+def show_thank_you():
+    """ When all the questions have been answered,
+        show the completion page
+    """
+
+    print(responses) 
+    
+    return render_template("completion.html")
