@@ -20,3 +20,15 @@ def start_survey():
     return render_template("survey_start.html", 
     title = title,
     instructions = instructions)
+
+
+@app.route("/questions/<int:q_num>")
+def show_question(q_num):
+    """ takes current question as param and renders html based on question """
+    question = survey.questions[q_num]
+
+    return render_template('question.html', 
+    question = question)
+
+
+@app.route("/action")
