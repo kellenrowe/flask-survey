@@ -4,4 +4,15 @@
 
   <h1>Thanks for completing this survey!</h1>
 
+  <div>
+    {% for idx in range(responses|length) %}
+      <span><b>{{ questions[idx].question }}: 
+      </b>{{ responses[idx]["answer"] }} 
+      {% if responses[idx]["comment"] %}
+       <i> {{ responses[idx]["comment"] }}</i>
+      {% endif %}</span>
+      <br>
+    {% endfor %}
+  </div>
+
 {% endblock %}

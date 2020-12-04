@@ -91,4 +91,9 @@ def show_thank_you():
     """ When all the questions have been answered,
         show the completion page
     """
-    return render_template("completion.html")
+    responses = session[RESPONSES_KEY]
+    questions = survey.questions
+
+    return render_template("completion.html",
+                           responses=responses,
+                           questions=questions)
