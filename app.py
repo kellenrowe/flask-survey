@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from surveys import satisfaction_survey as survey
+from surveys import personality_quiz as survey
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "never-tell!"
@@ -62,6 +62,12 @@ def record_answer():
         then redirect to the next question page
     """
     answer = request.form.get("answer")
+    comment = request.form.get("comment")
+
+    q_answer = {
+        "answer": answer,
+        "comment": comment
+    }
 
     # Get the question number
     q_num = int(request.form.get("q_num"))
@@ -71,7 +77,7 @@ def record_answer():
         return redirect(f"/questions/{q_num}")
 
     responses = session[RESPONSES_KEY]
-    responses.append(answer)
+    responses.append(q_answer)
     session[RESPONSES_KEY] = responses
 
     if q_num < len(survey.questions):

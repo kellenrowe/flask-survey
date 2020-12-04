@@ -20,6 +20,14 @@
   </p>
   {% endfor %}
 
+  <!-- Checks if the question allows for 
+       text with maximum 500 characters-->
+  {% if question.allow_text %}
+    <p>
+      <textarea name="comment" maxlength="500"></textarea>
+    </p>
+  {% endif %}
+
   <button>Continue</button>
 </form>
 
